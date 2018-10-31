@@ -12,15 +12,21 @@
     <script>
         // yieldToBrowser.js
 
+        /** Only schedule animation frame once per frame */
         let isFlushScheduled = false;
+
+        /** Queue of functions to invoke */
         let callbacks = [];
 
+        /** A unique message key to identify our message event apart from others */
         const messageKey =
             "___yieldToBrowser$" +
             Math.random()
                 .toString(36)
                 .slice(2);
 
+        // Flush the callback queue when a message is posted to the window with
+        // our message key
         window.addEventListener("message", event => {
             if (event.source !== window || event.data !== messageKey) {
                 return;
@@ -31,14 +37,20 @@
         });
 
         function flushCallbacks() {
+            // Reset the callback queue to an empty list in case callbacks call
+            // yieldToBrowser. These calls to yieldToBrowser should queue up a new
+            // callback to be flushed in the next yield and should not impact the
+            // current queue being flushed
             let toFlush = callbacks;
             callbacks = [];
 
             time = performance.now();
             for (let i = 0; i < toFlush.length; i++) {
+                // Call all callbacks with the time the flush began, for debug purposes
                 toFlush[i](time);
             }
 
+            // Ensure the callback is will be garbage collected
             toFlush = null;
         }
 
@@ -84,9 +96,13 @@
         async function callback1(time) {
             appendLog(time);
 
+            // Queue up a yield from within another yield to validate
+            // proper behavior
             time = await yieldToBrowserAsync();
             appendLog(time);
 
+            // Verify the Promise form of yield actually does delay until
+            // the next frame
             time = await yieldToBrowserAsync();
             appendLog(time);
         }
@@ -95,9 +111,19 @@
             appendLog(time);
         }
 
-        async function main() {
+        function callback3(time) {
+            appendLog(time);
+        }
+
+        function main() {
+            // Since these yields should be called in the same frame, they
+            // should append a log with the same time. The first two are in
+            // the same stack and so should be flushed together. The third
+            // should run in this frame since it is run when the microTask
+            // queue is flushed at the end of this stack.
             yieldToBrowser(callback1);
             yieldToBrowser(callback2);
+            Promise.resolve().then(() => yieldToBrowser(callback3))
         }
 
         main();
