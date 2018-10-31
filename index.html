@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <title>YieldToBrowser Sandbox</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <div id="app">
+        <ol id="log"></ol>
+    </div>
+    <script>
+        // yieldToBrowser.js
+
+        let isFlushScheduled = false;
+        let callbacks = [];
+
+        const messageKey =
+            "___yieldToBrowser$" +
+            Math.random()
+                .toString(36)
+                .slice(2);
+
+        window.addEventListener("message", event => {
+            if (event.source !== window || event.data !== messageKey) {
+                return;
+            }
+
+            isFlushScheduled = false;
+            flushCallbacks();
+        });
+
+        function flushCallbacks() {
+            let toFlush = callbacks;
+            callbacks = [];
+
+            time = performance.now();
+            for (let i = 0; i < toFlush.length; i++) {
+                toFlush[i](time);
+            }
+
+            toFlush = null;
+        }
+
+        /**
+         * @param {(time: number) => void} callback
+         */
+        function yieldToBrowser(callback) {
+            if (!isFlushScheduled) {
+                isFlushScheduled = true;
+                requestAnimationFrame(() => {
+                    window.postMessage(messageKey, "*");
+                });
+            }
+
+            callbacks.push(callback);
+        }
+
+    </script>
+    <script>
+        // yieldToBrowserAsync.js
+
+        function yieldToBrowserAsync() {
+            return new Promise(resolve => yieldToBrowser(time => resolve(time)));
+        }
+    </script>
+    <script>
+        // main.js
+
+        const list = document.getElementById('log');
+        function appendLog(log) {
+            if (log.toFixed) {
+                log = log.toFixed(2);
+            }
+
+            const text = document.createTextNode(log);
+
+            const logItem = document.createElement('li');
+            logItem.appendChild(text);
+
+            list.appendChild(logItem);
+        }
+
+        async function callback1(time) {
+            appendLog(time);
+
+            time = await yieldToBrowserAsync();
+            appendLog(time);
+
+            time = await yieldToBrowserAsync();
+            appendLog(time);
+        }
+
+        function callback2(time) {
+            appendLog(time);
+        }
+
+        async function main() {
+            yieldToBrowser(callback1);
+            yieldToBrowser(callback2);
+        }
+
+        main();
+    </script>
+</body>
+
+</html>
