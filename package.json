@@ -9,7 +9,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "prettier --write src/**/* && microbundle build",
+    "build": "prettier --write src/**/* test/**/* && microbundle build",
     "prepare": "npm run -s build"
   },
   "repository": {
