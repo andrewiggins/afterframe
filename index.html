@@ -1,142 +1,69 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>YieldToBrowser Sandbox</title>
     <meta charset="UTF-8" />
-</head>
+  </head>
 
-<body>
-    <div id="app">
-        <ol id="log"></ol>
-    </div>
+  <body>
+    <div id="app"><ol id="log"></ol></div>
+    <script src="dist/yieldToBrowser.umd.js"></script>
     <script>
-        // yieldToBrowser.js
-
-        // Useful commits to look at:
-        // * https://github.com/facebook/react/pull/14234
-        // * https://github.com/facebook/react/commit/8feeed10d8f79a0c01ca293890880cbe72b3788d#diff-603a307ec39e05daabd1c651dc2ffb15
-
-        /** Only schedule animation frame once per frame */
-        let isFlushScheduled = false;
-
-        /** Queue of functions to invoke */
-        let callbacks = [];
-
-        /** A unique message key to identify our message event apart from others */
-        // Shouldn't be necessary anymore since we use a local channel
-        // const messageKey =
-        //     "___yieldToBrowser$" +
-        //     Math.random()
-        //         .toString(36)
-        //         .slice(2);
-
-        const channel = new MessageChannel();
-        const port = channel.port2;
-
-        // Flush the callback queue when a message is posted to the message channel
-        channel.port1.onmessage = event => {
-            // Shouldn't be necessary anymore since we use a local channel
-            // if (event.source !== port || event.data !== messageKey) {
-            //     return;
-            // }
-
-            isFlushScheduled = false;
-            flushCallbacks();
-        };
-
-        function flushCallbacks() {
-            // Reset the callback queue to an empty list in case callbacks call
-            // yieldToBrowser. These calls to yieldToBrowser should queue up a new
-            // callback to be flushed in the next yield and should not impact the
-            // current queue being flushed
-            let toFlush = callbacks;
-            callbacks = [];
-
-            time = performance.now();
-            for (let i = 0; i < toFlush.length; i++) {
-                // Call all callbacks with the time the flush began, for debug purposes
-                // TODO: Error handling? (https://github.com/facebook/react/pull/14384)
-                toFlush[i](time);
-            }
-
-            // Ensure the callback is will be garbage collected
-            toFlush = null;
-        }
-
-        /**
-         * @param {(time: number) => void} callback
-         */
-        function yieldToBrowser(callback) {
-            if (!isFlushScheduled) {
-                isFlushScheduled = true;
-                requestAnimationFrame(() => {
-                    // See https://github.com/facebook/react/pull/14249
-                    // for explanation of why use `undefined` here
-                    port.postMessage(undefined);
-                });
-            }
-
-            callbacks.push(callback);
-        }
-
+      /**
+       * @returns {Promise<number>}
+       */
+      function yieldToBrowserAsync() {
+        return new Promise(resolve => yieldToBrowser(time => resolve(time)));
+      }
     </script>
     <script>
-        // yieldToBrowserAsync.js
+      // main.js
 
-        function yieldToBrowserAsync() {
-            return new Promise(resolve => yieldToBrowser(time => resolve(time)));
-        }
+      const list = document.getElementById("log");
+      const formatTime = num => num.toFixed(2);
+      function appendLog(log) {
+        const text = document.createTextNode(log);
+
+        const logItem = document.createElement("li");
+        logItem.appendChild(text);
+
+        list.appendChild(logItem);
+      }
+
+      async function callback1(time) {
+        appendLog("callback1: " + formatTime(time));
+
+        // Queue up a yield from within another yield to validate
+        // proper behavior
+        time = await yieldToBrowserAsync();
+        appendLog("await 1: " + formatTime(time));
+
+        // Verify the Promise form of yield actually does delay until
+        // the next frame
+        time = await yieldToBrowserAsync();
+        appendLog("await 2: " + formatTime(time));
+      }
+
+      function callback2(time) {
+        appendLog("callback2: " + formatTime(time));
+      }
+
+      function callback3(time) {
+        appendLog("callback3: " + formatTime(time));
+      }
+
+      function main() {
+        // Since these yields should be called in the same frame, they
+        // should append a log with the same time. The first two are in
+        // the same stack and so should be flushed together. The third
+        // should run in this frame since it is run when the microTask
+        // queue is flushed at the end of this stack.
+        yieldToBrowser(callback1);
+        yieldToBrowser(callback2);
+        Promise.resolve().then(() => yieldToBrowser(callback3));
+      }
+
+      main();
     </script>
-    <script>
-        // main.js
-
-        const list = document.getElementById('log');
-        const formatTime = num => num.toFixed(2);
-        function appendLog(log) {
-            const text = document.createTextNode(log);
-
-            const logItem = document.createElement('li');
-            logItem.appendChild(text);
-
-            list.appendChild(logItem);
-        }
-
-        async function callback1(time) {
-            appendLog('callback1: ' + formatTime(time));
-
-            // Queue up a yield from within another yield to validate
-            // proper behavior
-            time = await yieldToBrowserAsync();
-            appendLog('await 1: ' + formatTime(time));
-
-            // Verify the Promise form of yield actually does delay until
-            // the next frame
-            time = await yieldToBrowserAsync();
-            appendLog('await 2: ' + formatTime(time));
-        }
-
-        function callback2(time) {
-            appendLog('callback2: ' + formatTime(time));
-        }
-
-        function callback3(time) {
-            appendLog('callback3: ' + formatTime(time));
-        }
-
-        function main() {
-            // Since these yields should be called in the same frame, they
-            // should append a log with the same time. The first two are in
-            // the same stack and so should be flushed together. The third
-            // should run in this frame since it is run when the microTask
-            // queue is flushed at the end of this stack.
-            yieldToBrowser(callback1);
-            yieldToBrowser(callback2);
-            Promise.resolve().then(() => yieldToBrowser(callback3))
-        }
-
-        main();
-    </script>
-</body>
-
+  </body>
 </html>

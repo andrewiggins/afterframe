@@ -1,0 +1,32 @@
+{
+  "name": "yield-to-browser",
+  "version": "0.0.1",
+  "description": "A simple method to invoke a function after the browser has rendered & painted a frame",
+  "unpkg": "dist/yieldToBrowser.umd.js",
+  "main": "dist/yieldToBrowser.js",
+  "module": "dist/yieldToBrowser.mjs",
+  "umd:main": "dist/yieldToBrowser.umd.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "microbundle build",
+    "prepare": "npm run -s build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewiggins/yield-to-browser.git"
+  },
+  "authors": [
+    "Andre Wiggins <https://github.com/andrewiggins>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewiggins/yield-to-browser/issues"
+  },
+  "homepage": "https://github.com/andrewiggins/yield-to-browser#readme",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "microbundle": "^0.9.0",
+    "prettier": "^1.15.3"
+  }
+}
