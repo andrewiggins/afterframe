@@ -12,7 +12,6 @@ let scheduledFrame = 0;
 let callbacks = [];
 
 const channel = new MessageChannel();
-const port = channel.port2;
 
 // Flush the callback queue when a message is posted to the message channel
 channel.port1.onmessage = function() {
@@ -27,11 +26,15 @@ channel.port1.onmessage = function() {
 
   let time = performance.now();
   for (let i = 0; i < toFlush.length; i++) {
-    // Call all callbacks with the time the flush began, for debug purposes
+    // Call all callbacks with the time the flush began, similar to requestAnimationFrame
     // TODO: Error handling? (https://github.com/facebook/react/pull/14384)
     toFlush[i](time);
   }
 };
+
+function postMessage() {
+  channel.port2.postMessage(undefined);
+}
 
 /**
  * Invoke the given callback after the browser renders the next frame
@@ -42,11 +45,7 @@ channel.port1.onmessage = function() {
  */
 export default function yieldToBrowser(callback) {
   if (!scheduledFrame) {
-    scheduledFrame = requestAnimationFrame(() => {
-      // See https://github.com/facebook/react/pull/14249
-      // for explanation of why use `undefined` here
-      port.postMessage(undefined);
-    });
+    scheduledFrame = requestAnimationFrame(postMessage);
   }
 
   callbacks.push(callback);
