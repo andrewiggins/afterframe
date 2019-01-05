@@ -12,6 +12,10 @@
     <script>
         // yieldToBrowser.js
 
+        // Useful commits to look at:
+        // * https://github.com/facebook/react/pull/14234
+        // * https://github.com/facebook/react/commit/8feeed10d8f79a0c01ca293890880cbe72b3788d#diff-603a307ec39e05daabd1c651dc2ffb15
+
         /** Only schedule animation frame once per frame */
         let isFlushScheduled = false;
 
@@ -19,22 +23,26 @@
         let callbacks = [];
 
         /** A unique message key to identify our message event apart from others */
-        const messageKey =
-            "___yieldToBrowser$" +
-            Math.random()
-                .toString(36)
-                .slice(2);
+        // Shouldn't be necessary anymore since we use a local channel
+        // const messageKey =
+        //     "___yieldToBrowser$" +
+        //     Math.random()
+        //         .toString(36)
+        //         .slice(2);
 
-        // Flush the callback queue when a message is posted to the window with
-        // our message key
-        window.addEventListener("message", event => {
-            if (event.source !== window || event.data !== messageKey) {
-                return;
-            }
+        const channel = new MessageChannel();
+        const port = channel.port2;
+
+        // Flush the callback queue when a message is posted to the message channel
+        channel.port1.onmessage = event => {
+            // Shouldn't be necessary anymore since we use a local channel
+            // if (event.source !== port || event.data !== messageKey) {
+            //     return;
+            // }
 
             isFlushScheduled = false;
             flushCallbacks();
-        });
+        };
 
         function flushCallbacks() {
             // Reset the callback queue to an empty list in case callbacks call
@@ -47,6 +55,7 @@
             time = performance.now();
             for (let i = 0; i < toFlush.length; i++) {
                 // Call all callbacks with the time the flush began, for debug purposes
+                // TODO: Error handling? (https://github.com/facebook/react/pull/14384)
                 toFlush[i](time);
             }
 
@@ -61,7 +70,9 @@
             if (!isFlushScheduled) {
                 isFlushScheduled = true;
                 requestAnimationFrame(() => {
-                    window.postMessage(messageKey, "*");
+                    // See https://github.com/facebook/react/pull/14249
+                    // for explanation of why use `undefined` here
+                    port.postMessage(undefined);
                 });
             }
 
