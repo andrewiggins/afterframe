@@ -1,5 +1,5 @@
 // Validate correct TS import statement
-import yieldToBrowser from '../';
+import yieldToBrowser from "../";
 
 type Callback = (time: number) => void;
 
