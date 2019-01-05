@@ -6,10 +6,11 @@
   "main": "dist/yieldToBrowser.js",
   "module": "dist/yieldToBrowser.mjs",
   "umd:main": "dist/yieldToBrowser.umd.js",
+  "source": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
     "test": "tsc -p ./test/tsconfig.json && jest",
-    "build": "prettier --write src/**/* test/**/* && microbundle build",
+    "build": "prettier --write src/**/* test/**/* && microbundle build && npm run -s doc",
     "prepare": "npm run -s build"
   },
   "repository": {
@@ -20,6 +21,10 @@
     "Andre Wiggins <https://github.com/andrewiggins>"
   ],
   "license": "MIT",
+  "files": [
+    "src",
+    "dist"
+  ],
   "bugs": {
     "url": "https://github.com/andrewiggins/yield-to-browser/issues"
   },
