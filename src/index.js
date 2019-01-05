@@ -15,13 +15,9 @@ const channel = new MessageChannel();
 const port = channel.port2;
 
 // Flush the callback queue when a message is posted to the message channel
-channel.port1.onmessage = () => {
+channel.port1.onmessage = function() {
   scheduledFrame = 0;
-  flushCallbacks();
-};
 
-// TODO: Inline this function
-function flushCallbacks() {
   // Reset the callback queue to an empty list in case callbacks call
   // yieldToBrowser. These calls to yieldToBrowser should queue up a new
   // callback to be flushed in the next yield and should not impact the
@@ -29,21 +25,20 @@ function flushCallbacks() {
   let toFlush = callbacks;
   callbacks = [];
 
-  // TODO: Is this necessary? Perhaps remove it...
   let time = performance.now();
   for (let i = 0; i < toFlush.length; i++) {
     // Call all callbacks with the time the flush began, for debug purposes
     // TODO: Error handling? (https://github.com/facebook/react/pull/14384)
     toFlush[i](time);
   }
-
-  // Ensure the callback will be garbage collected
-  toFlush = null;
-}
+};
 
 /**
  * Invoke the given callback after the browser renders the next frame
- * @param {(time: number) => void} callback
+ * @param {(time: number) => void} callback The function to call after the browser renders
+ * the next frame. The callback function is passed one argument, a DOMHighResTimeStamp
+ * similar to the one returned by performance.now(), indicating the point in time when
+ * yieldToBrowser() starts to execute callback functions.
  */
 export default function yieldToBrowser(callback) {
   if (!scheduledFrame) {
