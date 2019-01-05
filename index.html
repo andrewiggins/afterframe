@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -91,11 +92,8 @@
         // main.js
 
         const list = document.getElementById('log');
+        const formatTime = num => num.toFixed(2);
         function appendLog(log) {
-            if (log.toFixed) {
-                log = log.toFixed(2);
-            }
-
             const text = document.createTextNode(log);
 
             const logItem = document.createElement('li');
@@ -105,25 +103,25 @@
         }
 
         async function callback1(time) {
-            appendLog(time);
+            appendLog('callback1: ' + formatTime(time));
 
             // Queue up a yield from within another yield to validate
             // proper behavior
             time = await yieldToBrowserAsync();
-            appendLog(time);
+            appendLog('await 1: ' + formatTime(time));
 
             // Verify the Promise form of yield actually does delay until
             // the next frame
             time = await yieldToBrowserAsync();
-            appendLog(time);
+            appendLog('await 2: ' + formatTime(time));
         }
 
         function callback2(time) {
-            appendLog(time);
+            appendLog('callback2: ' + formatTime(time));
         }
 
         function callback3(time) {
-            appendLog(time);
+            appendLog('callback3: ' + formatTime(time));
         }
 
         function main() {
