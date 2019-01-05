@@ -5,4 +5,4 @@
  * similar to the one returned by performance.now(), indicating the point in time when
  * yieldToBrowser() starts to execute callback functions.
  */
-export function yieldToBrowser(callback: (time: number) => void): void;
+export default function yieldToBrowser(callback: (time: number) => void): void;

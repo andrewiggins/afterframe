@@ -1,42 +1,49 @@
-describe("yieldToBrowser", () => {
-  /** @type {import('../').default} */
-  let yieldToBrowser;
+// Validate correct TS import statement
+import yieldToBrowser from '../';
 
-  function MessagePortMock() {
-    this.otherPort = undefined;
-    this.onmessage = undefined;
-    this.postMessage = () => {
+type Callback = (time: number) => void;
+
+describe("yieldToBrowser", () => {
+  let yieldToBrowser: typeof import("../").default;
+
+  class MessagePortMock {
+    public otherPort: MessagePortMock | undefined;
+    public onmessage: ((event: any) => void) | undefined;
+
+    public postMessage() {
       if (this.otherPort && this.otherPort.onmessage) {
         this.otherPort.onmessage({});
       }
-    };
+    }
   }
 
-  function MessageChannelMock() {
-    this.port1 = new MessagePortMock();
-    this.port2 = new MessagePortMock();
+  class MessageChannelMock {
+    public port1 = new MessagePortMock();
+    public port2 = new MessagePortMock();
 
-    this.port1.otherPort = this.port2;
-    this.port2.otherPort = this.port1;
+    constructor() {
+      this.port1.otherPort = this.port2;
+      this.port2.otherPort = this.port1;
+    }
   }
 
-  let rAFCallback;
-  function rAFMock(callback) {
+  let rAFCallback: Callback | null = null;
+  function rAFMock(callback: Callback) {
     rAFCallback = callback;
     return 1;
   }
 
   function renderFrame() {
     if (rAFCallback) {
-      rAFCallback();
+      rAFCallback(performance.now());
     }
   }
 
   beforeEach(() => {
     jest.resetModuleRegistry();
     rAFCallback = null;
-    global.MessageChannel = MessageChannelMock;
-    global.requestAnimationFrame = jest.fn(rAFMock);
+    (global as any).MessageChannel = MessageChannelMock;
+    (global as any).requestAnimationFrame = jest.fn(rAFMock);
 
     yieldToBrowser = require("../dist/yieldToBrowser");
   });
@@ -79,7 +86,9 @@ describe("yieldToBrowser", () => {
   });
 
   it("invokes nested yields in new frames", () => {
-    let time1, time2, time3;
+    let time1: number | undefined,
+      time2: number | undefined,
+      time3: number | undefined;
     const callback3 = jest.fn(t3 => {
       time3 = t3;
     });
@@ -119,7 +128,7 @@ describe("yieldToBrowser", () => {
     expect(callback2).toHaveBeenCalledTimes(1);
     expect(callback3).toHaveBeenCalledTimes(0);
     expect(time1).toBeGreaterThan(0);
-    expect(time2).toBeGreaterThan(time1);
+    expect(time2).toBeGreaterThan(time1 as number);
     expect(time3).toBeUndefined();
 
     // Third frame
@@ -129,7 +138,16 @@ describe("yieldToBrowser", () => {
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(time1).toBeGreaterThan(0);
-    expect(time2).toBeGreaterThan(time1);
-    expect(time3).toBeGreaterThan(time2);
+    expect(time2).toBeGreaterThan(time1 as number);
+    expect(time3).toBeGreaterThan(time2 as number);
+  });
+
+  it("accepts callbacks that ignore the time argument", () => {
+    // Primarly a TypeScript types test
+    let invoked = false;
+    yieldToBrowser(() => (invoked = true));
+    renderFrame();
+
+    expect(invoked).toBe(true);
   });
 });
