@@ -3,7 +3,7 @@
 // * https://github.com/facebook/react/commit/8feeed10d8f79a0c01ca293890880cbe72b3788d#diff-603a307ec39e05daabd1c651dc2ffb15
 
 /** Only schedule animation frame once per frame */
-let isFlushScheduled = false;
+let scheduledFrame = 0;
 
 /**
  * Queue of functions to invoke
@@ -16,7 +16,7 @@ const port = channel.port2;
 
 // Flush the callback queue when a message is posted to the message channel
 channel.port1.onmessage = () => {
-  isFlushScheduled = false;
+  scheduledFrame = 0;
   flushCallbacks();
 };
 
@@ -46,9 +46,8 @@ function flushCallbacks() {
  * @param {(time: number) => void} callback
  */
 export default function yieldToBrowser(callback) {
-  if (!isFlushScheduled) {
-    isFlushScheduled = true;
-    requestAnimationFrame(() => {
+  if (!scheduledFrame) {
+    scheduledFrame = requestAnimationFrame(() => {
       // See https://github.com/facebook/react/pull/14249
       // for explanation of why use `undefined` here
       port.postMessage(undefined);
