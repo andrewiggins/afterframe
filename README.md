@@ -8,8 +8,8 @@
 
 ## TODO
 
-- Add note about how implementation is taken from React's scheduler
-- Complete usage section
+- Complete Prior Work section
+- Complete Usage section
 - Add section about browser support
 - Add demo codepen to examples section
 - Hook up AzureDevOps build
@@ -21,6 +21,7 @@
 - [Usage](#usage)
 - [Examples & Demos](#examples--demos)
 - [API](#api)
+- [Prior Work](#prior-work)
 - [Contribute](#contribute)
 
 ## Install
@@ -77,6 +78,12 @@ Invoke the given callback after the browser renders the next frame
 #### Parameters
 
 - `callback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** The function to invoke after the browser renders the next frame. The callback function is passed one argument, a [`DOMHighResTimeStamp`](https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp) similar to the one returned by [`performance.now()`](https://developer.mozilla.org/en-US/docs/Web/API/Performance/now), indicating the point in time when `yieldToBrowser()` starts to execute callback functions.
+
+## Prior Work
+
+- TODO: Add note about how implementation is taken from [React's scheduler](https://github.com/facebook/react)
+- TODO: Add note about using [Jason's implementation](https://twitter.com/_developit/status/1081681351122829325)
+- TODO: Add link to [Addy's tweet](https://twitter.com/addyosmani/status/1081452739882876931) and [Nolan's blog](https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/)
 
 ## Contribute
 
