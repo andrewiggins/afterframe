@@ -1,5 +1,5 @@
 <!-- <p>
-<a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/mitt.svg?style=flat" alt="npm"></a> <a href="https://travis-ci.org/developit/mitt"><img src="https://travis-ci.org/developit/mitt.svg?branch=master" alt="travis"></a> <a href="https://david-dm.org/developit/mitt"><img src="https://david-dm.org/developit/mitt/status.svg" alt="dependencies Status"></a> <a href="https://unpkg.com/mitt/dist/mitt.umd.js"><img src="http://img.badgesize.io/https://unpkg.com/mitt/dist/mitt.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=mitt"><img src="https://packagephobia.now.sh/badge?p=mitt" alt="install size"></a>
+<a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/afterframe.svg?style=flat" alt="npm"></a> <a href="https://travis-ci.org/andrewiggins/afterframe"><img src="https://travis-ci.org/andrewiggins/afterframe.svg?branch=master" alt="travis"></a> <a href="https://david-dm.org/andrewiggins/afterframe"><img src="https://david-dm.org/andrewiggins/afterframe/status.svg" alt="dependencies Status"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="http://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
 </p> -->
 
 # AfterFrame
@@ -10,7 +10,7 @@
 
 - Complete Prior Work section
 - Complete Usage section
-- Add section about browser support
+  - Add section about browser support
 - Add demo codepen to examples section
 - Hook up AzureDevOps build
 - Improve demo (index.html) file
@@ -30,7 +30,7 @@ This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go che
 
 ```sh
 $ npm install --save afterframe
-+ afterframe@0.0.1
++ afterframe@0.0.0
 ```
 
 Then with a module bundler like [rollup](http://rollupjs.org/) or [webpack](https://webpack.js.org/), use as you would anything else:
