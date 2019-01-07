@@ -1,10 +1,10 @@
 // Validate correct TS import statement
-import yieldToBrowser from "../";
+import afterFrame from "../";
 
 type Callback = (time: number) => void;
 
-describe("yieldToBrowser", () => {
-  let yieldToBrowser: typeof import("../").default;
+describe("afterFrame", () => {
+  let afterFrame: typeof import("../").default;
 
   class MessagePortMock {
     public otherPort: MessagePortMock | undefined;
@@ -45,7 +45,7 @@ describe("yieldToBrowser", () => {
     (global as any).MessageChannel = MessageChannelMock;
     (global as any).requestAnimationFrame = jest.fn(rAFMock);
 
-    yieldToBrowser = require("../dist/yieldToBrowser");
+    afterFrame = require("../dist/afterFrame");
   });
 
   it("uses rAF and MessageChannel to invoke callback", () => {
@@ -54,7 +54,7 @@ describe("yieldToBrowser", () => {
       time = t;
     });
 
-    yieldToBrowser(callback);
+    afterFrame(callback);
     renderFrame();
 
     expect(callback).toHaveBeenCalled();
@@ -64,9 +64,9 @@ describe("yieldToBrowser", () => {
   it("runs multiple callbacks in one rAF for per frame", () => {
     let callback = jest.fn();
 
-    yieldToBrowser(callback);
-    yieldToBrowser(callback);
-    yieldToBrowser(callback);
+    afterFrame(callback);
+    afterFrame(callback);
+    afterFrame(callback);
 
     expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
     expect(callback).toHaveBeenCalledTimes(0);
@@ -74,9 +74,9 @@ describe("yieldToBrowser", () => {
     renderFrame();
     expect(callback).toHaveBeenCalledTimes(3);
 
-    yieldToBrowser(callback);
-    yieldToBrowser(callback);
-    yieldToBrowser(callback);
+    afterFrame(callback);
+    afterFrame(callback);
+    afterFrame(callback);
 
     expect(requestAnimationFrame).toHaveBeenCalledTimes(2);
     expect(callback).toHaveBeenCalledTimes(3);
@@ -85,7 +85,7 @@ describe("yieldToBrowser", () => {
     expect(callback).toHaveBeenCalledTimes(6);
   });
 
-  it("invokes nested yields in new frames", () => {
+  it("invokes nested callbacks in new frames", () => {
     let time1: number | undefined,
       time2: number | undefined,
       time3: number | undefined;
@@ -94,15 +94,15 @@ describe("yieldToBrowser", () => {
     });
     const callback2 = jest.fn(t2 => {
       time2 = t2;
-      yieldToBrowser(callback3);
+      afterFrame(callback3);
     });
     const callback1 = jest.fn(t1 => {
       time1 = t1;
-      yieldToBrowser(callback2);
+      afterFrame(callback2);
     });
 
-    // Schedule yield
-    yieldToBrowser(callback1);
+    // Schedule callback
+    afterFrame(callback1);
 
     expect(callback1).toHaveBeenCalledTimes(0);
     expect(callback2).toHaveBeenCalledTimes(0);
@@ -145,7 +145,7 @@ describe("yieldToBrowser", () => {
   it("accepts callbacks that ignore the time argument", () => {
     // Primarly a TypeScript types test
     let invoked = false;
-    yieldToBrowser(() => (invoked = true));
+    afterFrame(() => (invoked = true));
     renderFrame();
 
     expect(invoked).toBe(true);

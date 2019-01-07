@@ -1,21 +1,22 @@
 {
-  "name": "yield-to-browser",
-  "version": "0.0.1",
+  "name": "afterframe",
+  "amdName": "afterFrame",
+  "version": "0.0.2",
   "description": "A simple method to invoke a function after the browser has rendered & painted a frame",
-  "unpkg": "dist/yieldToBrowser.umd.js",
-  "main": "dist/yieldToBrowser.js",
-  "module": "dist/yieldToBrowser.mjs",
-  "umd:main": "dist/yieldToBrowser.umd.js",
+  "unpkg": "dist/afterframe.umd.js",
+  "main": "dist/afterframe.js",
+  "module": "dist/afterframe.mjs",
+  "umd:main": "dist/afterframe.umd.js",
   "source": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "test": "tsc -p ./test/tsconfig.json && jest",
-    "build": "prettier --write src/**/* test/**/* && microbundle build && npm run -s doc",
+    "test": "npm run build && tsc -p ./test/tsconfig.json && jest",
+    "build": "prettier --write src/**/* test/**/* && microbundle build",
     "prepare": "npm run -s build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andrewiggins/yield-to-browser.git"
+    "url": "git+https://github.com/andrewiggins/afterframe.git"
   },
   "authors": [
     "Andre Wiggins <https://github.com/andrewiggins>"
@@ -26,9 +27,9 @@
     "dist"
   ],
   "bugs": {
-    "url": "https://github.com/andrewiggins/yield-to-browser/issues"
+    "url": "https://github.com/andrewiggins/afterframe/issues"
   },
-  "homepage": "https://github.com/andrewiggins/yield-to-browser#readme",
+  "homepage": "https://github.com/andrewiggins/afterframe#readme",
   "devDependencies": {
     "@types/jest": "^23.3.11",
     "@types/node": "^10.12.18",

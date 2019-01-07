@@ -13,8 +13,8 @@ const channel = new MessageChannel();
 // Flush the callback queue when a message is posted to the message channel
 channel.port1.onmessage = () => {
   // Reset the callback queue to an empty list in case callbacks call
-  // yieldToBrowser. These calls to yieldToBrowser should queue up a new
-  // callback to be flushed in the next yield and should not impact the
+  // afterFrame. These calls to afterFrame should queue up a new
+  // callback to be flushed in the following frame and should not impact the
   // current queue being flushed
 
   // 193 B
@@ -48,9 +48,9 @@ function postMessage() {
  * @param {(time: number) => void} callback The function to call after the browser renders
  * the next frame. The callback function is passed one argument, a DOMHighResTimeStamp
  * similar to the one returned by performance.now(), indicating the point in time when
- * yieldToBrowser() starts to execute callback functions.
+ * afterFrame() starts to execute callback functions.
  */
-export default function yieldToBrowser(callback) {
+export default function afterFrame(callback) {
   if (callbacks.push(callback) === 1) {
     requestAnimationFrame(postMessage);
   }
