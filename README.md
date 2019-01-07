@@ -8,7 +8,6 @@
 
 ## TODO
 
-- Complete Prior Work section
 - Complete Usage section
   - Add section about browser support
 - Add demo codepen to examples section
@@ -81,9 +80,12 @@ Invoke the given callback after the browser renders the next frame
 
 ## Prior Work
 
-- TODO: Add note about how implementation is taken from [React's scheduler](https://github.com/facebook/react)
-- TODO: Add note about using [Jason's implementation](https://twitter.com/_developit/status/1081681351122829325)
-- TODO: Add link to [Addy's tweet](https://twitter.com/addyosmani/status/1081452739882876931) and [Nolan's blog](https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/)
+- The implementation for this package is heavily inspired by [React's Scheduler](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js). Some commits of particular interest:
+  - [Post to MessageChannel instead of window ](https://github.com/facebook/react/pull/14234)
+  - [Remove window.postMessage fallback](https://git.io/fhsQk)
+  - [Reduce scheduler serialization overhead](https://github.com/facebook/react/pull/14249)
+- [Jason Miller's tweet](https://twitter.com/_developit/status/1081681351122829325) of the same function provided some good inspiration for reducing code size
+- [Nolan Lawson blogged](https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/) about using a similar technique to more accurately measure layout time
 
 ## Contribute
 

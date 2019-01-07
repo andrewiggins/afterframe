@@ -1,7 +1,3 @@
-// Useful commits to look at:
-// * https://github.com/facebook/react/pull/14234
-// * https://github.com/facebook/react/commit/8feeed10d8f79a0c01ca293890880cbe72b3788d#diff-603a307ec39e05daabd1c651dc2ffb15
-
 /**
  * Queue of functions to invoke
  * @type {Array<(time: number) => void>}
