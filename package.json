@@ -11,7 +11,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "test": "tsc -p ./test/tsconfig.json && jest --ci --coverage",
-    "build": "prettier -l \"{src,test}/**/*\" && microbundle build",
+    "build": "prettier -l \"{src/**/*,test/**/*.ts}\" && microbundle build",
     "prepare": "npm run -s build"
   },
   "repository": {
