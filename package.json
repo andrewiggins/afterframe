@@ -11,8 +11,8 @@
   "types": "src/index.d.ts",
   "scripts": {
     "test": "tsc -p ./test/tsconfig.json && jest --ci --coverage",
-    "build": "prettier -l \"{src/**/*,test/**/*.ts}\" && microbundle build",
-    "prepare": "npm run -s build"
+    "build": "microbundle build",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,6 @@
     "jest": "^23.6.0",
     "jest-junit": "^5.2.0",
     "microbundle": "^0.9.0",
-    "prettier": "^1.15.3",
     "typescript": "^3.2.2"
   },
   "jest": {
