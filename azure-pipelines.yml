@@ -9,9 +9,6 @@ trigger:
 pool:
   vmImage: 'Ubuntu-16.04'
 
-variables:
-  debug: false
-
 steps:
 - task: NodeTool@0
   inputs:
@@ -39,15 +36,8 @@ steps:
     reportDirectory: 'coverage'
 
 - task: ArchiveFiles@2
-  condition: $(debug)
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
     includeRootFolder: false
 
 - task: PublishBuildArtifacts@1
-  condition: $(debug)
-
-# - task: PublishPipelineArtifact@0
-#   inputs:
-#     artifactName: 'artifactName'
-#     targetPath: 'src/MyWebApp/bin/Release/netcoreapp2.0/linux-x64/publish'
