@@ -8,8 +8,6 @@
 
 ## TODO
 
-- Complete Usage section
-  - Add section about browser support
 - Add demo codepen to examples section
 - Hook up AzureDevOps build
 - Improve demo (index.html) file
@@ -52,11 +50,21 @@ You can find the function on `window.afterFrame`.
 
 ## Usage
 
+> Inspired by [Nolan Lawson's blog on measuring layout](https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/)
+
 ```js
 import afterFrame from 'afterframe'
 
-// TODO
+performance.mark('start');
+
+// Do some work...
+
+afterFrame(() => {
+  performance.mark('end');
+});
 ```
+
+`afterFrame` currently relies on [`requestAnimationFrame`](https://caniuse.com/#feat=requestanimationframe) and [`MessageChannel`](https://caniuse.com/#feat=channel-messaging) so support starts at IE10 and above.
 
 ## Examples & Demos
 
