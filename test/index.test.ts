@@ -45,7 +45,7 @@ describe("afterFrame", () => {
     (global as any).MessageChannel = MessageChannelMock;
     (global as any).requestAnimationFrame = jest.fn(rAFMock);
 
-    afterFrame = require("../dist/afterFrame");
+    afterFrame = require("../");
   });
 
   it("uses rAF and MessageChannel to invoke callback", () => {
