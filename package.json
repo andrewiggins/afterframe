@@ -10,7 +10,7 @@
   "source": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "test": "npm run build && tsc -p ./test/tsconfig.json && jest",
+    "test": "tsc -p ./test/tsconfig.json && jest",
     "build": "prettier --write src/**/* test/**/* && microbundle build",
     "prepare": "npm run -s build"
   },
