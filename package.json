@@ -12,7 +12,8 @@
   "scripts": {
     "test": "tsc -p ./test/tsconfig.json && jest --ci --coverage",
     "build": "microbundle build",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test"
   },
   "repository": {
     "type": "git",
