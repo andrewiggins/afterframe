@@ -1,22 +1,16 @@
-<!-- <p>
-<a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/afterframe.svg?style=flat" alt="npm"></a> <a href="https://travis-ci.org/andrewiggins/afterframe"><img src="https://travis-ci.org/andrewiggins/afterframe.svg?branch=master" alt="travis"></a> <a href="https://david-dm.org/andrewiggins/afterframe"><img src="https://david-dm.org/andrewiggins/afterframe/status.svg" alt="dependencies Status"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="http://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
-</p> -->
+<p>
+<a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/afterframe.svg?style=flat" alt="npm"></a> <a href="https://dev.azure.com/andrewiggins-gh/afterframe/_build?definitionId=2&_a=summary"><img src="https://dev.azure.com/andrewiggins-gh/afterframe/_apis/build/status/andrewiggins.afterframe?branchName=master" alt="
+Azure DevOps Build Status"></a> <a href="https://david-dm.org/andrewiggins/afterframe"><img src="https://david-dm.org/andrewiggins/afterframe/status.svg" alt="dependencies Status"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="https://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
+</p>
 
 # AfterFrame
 
 > Tiny 200b function to invoke a callback after the browser renders the next frame
 
-## TODO
-
-- Add demo codepen to examples section
-- Hook up AzureDevOps build
-- Improve demo (index.html) file
-
 ## Table of Contents
 
 - [Install](#install)
 - [Usage](#usage)
-- [Examples & Demos](#examples--demos)
 - [API](#api)
 - [Prior Work](#prior-work)
 - [Contribute](#contribute)
@@ -66,11 +60,11 @@ afterFrame(() => {
 
 `afterFrame` currently relies on [`requestAnimationFrame`](https://caniuse.com/#feat=requestanimationframe) and [`MessageChannel`](https://caniuse.com/#feat=channel-messaging) so support starts at IE10 and above.
 
-## Examples & Demos
+<!-- ## Examples & Demos
 
-TODO
+TODO: Publish demo.html as codepen?
 
-<!-- <a href="http://codepen.io/developit/pen/rjMEwW?editors=0110">
+<a href="http://codepen.io/developit/pen/rjMEwW?editors=0110">
   <b>Preact + Mitt Codepen Demo</b>
   <br>
   <img src="https://i.imgur.com/CjBgOfJ.png" width="278" alt="preact + mitt preview">
