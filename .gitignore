@@ -6,6 +6,7 @@
 
 dist/
 test/*.js
+test-results/
 
 
 ##########################

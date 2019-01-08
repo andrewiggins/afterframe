@@ -10,8 +10,8 @@
   "source": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
-    "test": "tsc -p ./test/tsconfig.json && jest",
-    "build": "prettier --write src/**/* test/**/* && microbundle build",
+    "test": "tsc -p ./test/tsconfig.json && jest --ci --coverage",
+    "build": "prettier -l \"{src,test}/**/*\" && microbundle build",
     "prepare": "npm run -s build"
   },
   "repository": {
@@ -34,8 +34,24 @@
     "@types/jest": "^23.3.11",
     "@types/node": "^10.12.18",
     "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
     "microbundle": "^0.9.0",
     "prettier": "^1.15.3",
     "typescript": "^3.2.2"
+  },
+  "jest": {
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "cobertura"
+    ],
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
+  },
+  "jest-junit": {
+    "outputDirectory": "./test-results/"
   }
 }
