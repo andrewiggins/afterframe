@@ -11,6 +11,7 @@ Azure DevOps Build Status"></a> <a href="https://david-dm.org/andrewiggins/after
 
 - [Install](#install)
 - [Usage](#usage)
+- [Examples & Demos](#examples--demos)
 - [API](#api)
 - [Prior Work](#prior-work)
 - [Contribute](#contribute)
@@ -28,10 +29,10 @@ Then with a module bundler like [rollup](http://rollupjs.org/) or [webpack](http
 
 ```javascript
 // using ES6 modules
-import afterFrame from 'afterframe'
+import afterFrame from "afterframe";
 
 // using CommonJS modules
-var afterFrame = require('afterframe')
+var afterFrame = require("afterframe");
 ```
 
 The [UMD](https://github.com/umdjs/umd) build is also available on [unpkg](https://unpkg.com):
@@ -47,28 +48,40 @@ You can find the function on `window.afterFrame`.
 > Inspired by [Nolan Lawson's blog on measuring layout](https://nolanlawson.com/2018/09/25/accurately-measuring-layout-on-the-web/)
 
 ```js
-import afterFrame from 'afterframe'
+import afterFrame from "afterframe";
 
-performance.mark('start');
+performance.mark("start");
 
 // Do some work...
 
 afterFrame(() => {
-  performance.mark('end');
+  performance.mark("end");
 });
 ```
 
 `afterFrame` currently relies on [`requestAnimationFrame`](https://caniuse.com/#feat=requestanimationframe) and [`MessageChannel`](https://caniuse.com/#feat=channel-messaging) so support starts at IE10 and above.
 
-<!-- ## Examples & Demos
+## Examples & Demos
 
-TODO: Publish demo.html as codepen?
+[Sample CodePen demonstrating usage of afterFrame](https://codepen.io/andrewiggins/pen/Ydvapy?editors=0010)
 
-<a href="http://codepen.io/developit/pen/rjMEwW?editors=0110">
-  <b>Preact + Mitt Codepen Demo</b>
-  <br>
-  <img src="https://i.imgur.com/CjBgOfJ.png" width="278" alt="preact + mitt preview">
-</a> -->
+Example function wrapping `afterFrame` in a `Promise`:
+
+```js
+let promise = null;
+function afterFrameAsync() {
+  if (promise === null) {
+    promise = new Promise(resolve =>
+      afterFrame(time => {
+        promise = null;
+        resolve(time);
+      })
+    );
+  }
+
+  return promise;
+}
+```
 
 ## API
 
