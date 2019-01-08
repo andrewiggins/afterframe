@@ -53,11 +53,12 @@
       }
 
       function main() {
-        // Since these callbacks should be called in the same frame, they
-        // should append a log with the same time. The first two are in
-        // the same stack and so should be flushed together. The third
-        // should run in this frame since it is run when the microTask
-        // queue is flushed at the end of this stack.
+        // Since these callbacks are all queued in the same frame, they
+        // should be called with the same time parameter. The first two
+        // (callback 1 & 2) are queued in the same JS stack and so will be
+        // flushed together. `callback3` should invoked with the same time
+        // since it is run when the JS microTask queue is flushed at the
+        // end of this stack, in the same frame as callback 1 and 2.
         afterFrame(callback1);
         afterFrame(callback2);
         Promise.resolve().then(() => afterFrame(callback3));
