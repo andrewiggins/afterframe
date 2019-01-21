@@ -5,7 +5,7 @@ Azure DevOps Build Status"></a> <a href="https://david-dm.org/andrewiggins/after
 
 # AfterFrame
 
-> Tiny 200b function to invoke a callback after the browser renders the next frame
+> Tiny function to invoke a callback after the browser renders the next frame
 
 ## Table of Contents
 
