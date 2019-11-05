@@ -32,14 +32,15 @@
   },
   "homepage": "https://github.com/andrewiggins/afterframe#readme",
   "devDependencies": {
-    "@types/jest": "^23.3.11",
-    "@types/node": "^10.12.18",
-    "jest": "^23.6.0",
-    "jest-junit": "^5.2.0",
-    "microbundle": "^0.9.0",
-    "typescript": "^3.2.2"
+    "@types/jest": "^24.0.21",
+    "@types/node": "^12.12.6",
+    "jest": "^24.9.0",
+    "jest-junit": "^9.0.0",
+    "microbundle": "^0.11.0",
+    "typescript": "^3.7.2"
   },
   "jest": {
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$",
     "coverageReporters": [
       "json",
       "lcov",
