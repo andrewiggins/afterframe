@@ -1,7 +1,7 @@
 {
   "name": "afterframe",
   "amdName": "afterFrame",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple method to invoke a function after the browser has rendered & painted a frame",
   "main": "dist/afterframe.js",
   "module": "dist/afterframe.module.js",
