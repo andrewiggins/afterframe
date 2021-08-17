@@ -33,7 +33,12 @@ describe("afterFrame", () => {
     return 1;
   }
 
-  function renderFrame() {
+  const delay = (ms = 5) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function renderFrame() {
+    // Wait a beat to simulate these frames running at different times
+    await delay();
+
     if (rAFCallback) {
       rAFCallback(performance.now());
     }
@@ -49,20 +54,20 @@ describe("afterFrame", () => {
     afterFrame = require("../");
   });
 
-  it("uses rAF and MessageChannel to invoke callback", () => {
+  it("uses rAF and MessageChannel to invoke callback", async () => {
     let time;
-    let callback = jest.fn(t => {
+    let callback = jest.fn((t) => {
       time = t;
     });
 
     afterFrame(callback);
-    renderFrame();
+    await renderFrame();
 
     expect(callback).toHaveBeenCalled();
     expect(time).toBeGreaterThan(0);
   });
 
-  it("runs multiple callbacks in one rAF for per frame", () => {
+  it("runs multiple callbacks in one rAF for per frame", async () => {
     let callback = jest.fn();
 
     afterFrame(callback);
@@ -72,7 +77,7 @@ describe("afterFrame", () => {
     expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
     expect(callback).toHaveBeenCalledTimes(0);
 
-    renderFrame();
+    await renderFrame();
     expect(callback).toHaveBeenCalledTimes(3);
 
     afterFrame(callback);
@@ -82,22 +87,22 @@ describe("afterFrame", () => {
     expect(requestAnimationFrame).toHaveBeenCalledTimes(2);
     expect(callback).toHaveBeenCalledTimes(3);
 
-    renderFrame();
+    await renderFrame();
     expect(callback).toHaveBeenCalledTimes(6);
   });
 
-  it("invokes nested callbacks in new frames", () => {
+  it("invokes nested callbacks in new frames", async () => {
     let time1: number | undefined,
       time2: number | undefined,
       time3: number | undefined;
-    const callback3 = jest.fn(t3 => {
+    const callback3 = jest.fn((t3) => {
       time3 = t3;
     });
-    const callback2 = jest.fn(t2 => {
+    const callback2 = jest.fn((t2) => {
       time2 = t2;
       afterFrame(callback3);
     });
-    const callback1 = jest.fn(t1 => {
+    const callback1 = jest.fn((t1) => {
       time1 = t1;
       afterFrame(callback2);
     });
@@ -113,7 +118,7 @@ describe("afterFrame", () => {
     expect(time3).toBeUndefined();
 
     // First frame
-    renderFrame();
+    await renderFrame();
 
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(callback2).toHaveBeenCalledTimes(0);
@@ -123,7 +128,7 @@ describe("afterFrame", () => {
     expect(time3).toBeUndefined();
 
     // Second frame
-    renderFrame();
+    await renderFrame();
 
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(callback2).toHaveBeenCalledTimes(1);
@@ -133,7 +138,7 @@ describe("afterFrame", () => {
     expect(time3).toBeUndefined();
 
     // Third frame
-    renderFrame();
+    await renderFrame();
 
     expect(callback1).toHaveBeenCalledTimes(1);
     expect(callback1).toHaveBeenCalledTimes(1);
@@ -143,11 +148,11 @@ describe("afterFrame", () => {
     expect(time3).toBeGreaterThan(time2 as number);
   });
 
-  it("accepts callbacks that ignore the time argument", () => {
+  it("accepts callbacks that ignore the time argument", async () => {
     // Primarly a TypeScript types test
     let invoked = false;
     afterFrame(() => (invoked = true));
-    renderFrame();
+    await renderFrame();
 
     expect(invoked).toBe(true);
   });
