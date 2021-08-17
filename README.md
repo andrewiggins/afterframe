@@ -1,6 +1,6 @@
 <p>
 <a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/afterframe.svg?style=flat" alt="npm"></a> <a href="https://dev.azure.com/andrewiggins-gh/afterframe/_build?definitionId=2&_a=summary"><img src="https://dev.azure.com/andrewiggins-gh/afterframe/_apis/build/status/andrewiggins.afterframe?branchName=master" alt="
-Azure DevOps Build Status"></a> <a href="https://david-dm.org/andrewiggins/afterframe"><img src="https://david-dm.org/andrewiggins/afterframe/status.svg" alt="dependencies Status"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="https://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
+Azure DevOps Build Status"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="https://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
 </p>
 
 # AfterFrame
