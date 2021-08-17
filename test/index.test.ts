@@ -40,8 +40,9 @@ describe("afterFrame", () => {
   }
 
   beforeEach(() => {
-    jest.resetModuleRegistry();
+    jest.resetModules();
     rAFCallback = null;
+    (global as any).performance = { now: Date.now };
     (global as any).MessageChannel = MessageChannelMock;
     (global as any).requestAnimationFrame = jest.fn(rAFMock);
 
