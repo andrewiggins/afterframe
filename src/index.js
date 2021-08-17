@@ -4,7 +4,11 @@
  */
 let callbacks = [];
 
-const channel = new MessageChannel();
+let channel = new MessageChannel();
+
+let postMessage = (function() {
+  this.postMessage(undefined);
+}).bind(channel.port2);
 
 // Flush the callback queue when a message is posted to the message channel
 channel.port1.onmessage = () => {
@@ -22,9 +26,8 @@ channel.port1.onmessage = () => {
   }
 };
 
-function postMessage() {
-  channel.port2.postMessage(undefined);
-}
+// If the onmessage handler closes over the MessageChannel, the MessageChannel never gets GC'd:
+channel = null;
 
 /**
  * Invoke the given callback after the browser renders the next frame
