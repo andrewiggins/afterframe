@@ -1,6 +1,5 @@
 <p>
-<a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/afterframe.svg?style=flat" alt="npm"></a> <a href="https://dev.azure.com/andrewiggins-gh/afterframe/_build?definitionId=2&_a=summary"><img src="https://dev.azure.com/andrewiggins-gh/afterframe/_apis/build/status/andrewiggins.afterframe?branchName=master" alt="
-Azure DevOps Build Status"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="https://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
+<a href="https://www.npmjs.org/package/afterframe"><img src="https://img.shields.io/npm/v/afterframe.svg?style=flat" alt="npm"></a> <a href="https://unpkg.com/afterframe/dist/afterframe.umd.js"><img src="https://img.badgesize.io/https://unpkg.com/afterframe/dist/afterframe.umd.js?compression=gzip" alt="gzip size"></a> <a href="https://packagephobia.now.sh/result?p=afterframe"><img src="https://packagephobia.now.sh/badge?p=afterframe" alt="install size"></a>
 </p>
 
 # AfterFrame
@@ -9,12 +8,18 @@ Azure DevOps Build Status"></a> <a href="https://unpkg.com/afterframe/dist/after
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [Examples & Demos](#examples--demos)
-- [API](#api)
-- [Prior Work](#prior-work)
-- [Contribute](#contribute)
+- [AfterFrame](#afterframe)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Examples \& Demos](#examples--demos)
+  - [API](#api)
+    - [afterFrame](#afterframe-1)
+      - [Parameters](#parameters)
+  - [Prior Work](#prior-work)
+  - [Contribute](#contribute)
+    - [Reporting Issues](#reporting-issues)
+    - [Submitting pull requests](#submitting-pull-requests)
 
 ## Install
 
@@ -71,8 +76,8 @@ Example function wrapping `afterFrame` in a `Promise`:
 let promise = null;
 function afterFrameAsync() {
   if (promise === null) {
-    promise = new Promise(resolve =>
-      afterFrame(time => {
+    promise = new Promise((resolve) =>
+      afterFrame((time) => {
         promise = null;
         resolve(time);
       })

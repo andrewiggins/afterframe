@@ -1,0 +1,26 @@
+name: Build & Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm pack
+      - uses: actions/upload-artifact@v3
+        with:
+          name: npm-package
+          path: afterframe-*.tgz
